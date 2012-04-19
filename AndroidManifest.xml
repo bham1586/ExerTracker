@@ -18,6 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="MotionCountActivity" android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.bhjy.ExerTracker.ShowMotionCountActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
