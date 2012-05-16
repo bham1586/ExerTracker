@@ -46,14 +46,20 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.exercisecount);
 
+		/*
 		xCoor=(TextView)findViewById(R.id.xcoor); // create X axis object
 		yCoor=(TextView)findViewById(R.id.ycoor); // create Y axis object
 		zCoor=(TextView)findViewById(R.id.zcoor); // create Z axis object
+		*/
+		
 		accel=(TextView)findViewById(R.id.accel); // create acceleration object
+		
+		/*
 		accuracyText=(TextView)findViewById(R.id.accuracy); // create acceleration object
 		xMag=(TextView)findViewById(R.id.xmag); // create X axis object
 		yMag=(TextView)findViewById(R.id.ymag); // create Y axis object
 		zMag=(TextView)findViewById(R.id.zmag); // create Z axis object
+		*/
 
 		sensorManager=(SensorManager)getSystemService(SENSOR_SERVICE);
 		// add listener. The listener will be HelloAndroid (this) class
