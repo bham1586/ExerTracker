@@ -1,5 +1,6 @@
 package com.bhjy.ExerTracker.Models;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.util.Log;
@@ -72,7 +73,7 @@ public class Set {
 	// Will be used by the ArrayAdapter in the ListView
 	@Override
 	public String toString() {
-		Log.d("ExerTracker", String.valueOf(getReps()));
-		return String.valueOf(reps);
+		SimpleDateFormat myFormat = new SimpleDateFormat("hh:mm aa");
+		return String.valueOf(reps) + " reps at " + myFormat.format(startTime);
 	}
 }
