@@ -23,7 +23,8 @@ import android.widget.Toast;
 public class ExerTrackerActivity extends Activity {
     
     private ExercisesDataSource exercisesDB;
-    
+    private List<Exercise> allExercises;
+    private ListView exerciseList;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,9 +53,9 @@ public class ExerTrackerActivity extends Activity {
         exercisesDB = new ExercisesDataSource(this);
         exercisesDB.open();
 
-		List<Exercise> allExercises = exercisesDB.getAllExercises();
+		allExercises = exercisesDB.getAllExercises();
 		
-        ListView exerciseList = (ListView) this.findViewById(R.id.listView1);
+        exerciseList = (ListView) this.findViewById(R.id.listView1);
         exerciseList.setAdapter(new ArrayAdapter<Exercise>(this, android.R.layout.simple_list_item_1, allExercises));
         //exerciseList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, EXERCISES));
         exerciseList.setOnItemClickListener(new OnItemClickListener() {
@@ -84,6 +85,8 @@ public class ExerTrackerActivity extends Activity {
     @Override
 	protected void onResume() {
 		exercisesDB.open();
+		allExercises = exercisesDB.getAllExercises();
+		exerciseList.setAdapter(new ArrayAdapter<Exercise>(this, android.R.layout.simple_list_item_1, allExercises));
 		super.onResume();
 	}
 

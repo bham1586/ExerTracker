@@ -20,7 +20,7 @@ public class ExercisesDataSource {
 				MyDatabaseHelper.EXERCISES_NAME, MyDatabaseHelper.EXERCISES_DESCRIPTION };
 
 		public ExercisesDataSource(Context context) {
-			dbHelper = new MyDatabaseHelper(context, null, null, 1);
+			dbHelper = new MyDatabaseHelper(context);
 		}
 
 		public void open() throws SQLException {
@@ -35,12 +35,20 @@ public class ExercisesDataSource {
 			ContentValues values = new ContentValues();
 			values.put(MyDatabaseHelper.EXERCISES_NAME, name);
 			values.put(MyDatabaseHelper.EXERCISES_DESCRIPTION, description);
-			long insertId = database.insert(MyDatabaseHelper.TABLE_EXERCISES, null,	values);
+			long insertId = database.insertOrThrow(MyDatabaseHelper.TABLE_EXERCISES, null,	values);
 			Cursor cursor = database.query(MyDatabaseHelper.TABLE_EXERCISES, allColumns, MyDatabaseHelper.EXERCISES_ID + " = " + insertId, null, null, null, null);
 			cursor.moveToFirst();
 			Exercise newExercise = cursorToExercise(cursor);
 			cursor.close();
 			return newExercise;
+		}
+		
+		public Exercise getExercise(long id) {
+			Cursor cursor = database.query(MyDatabaseHelper.TABLE_EXERCISES, allColumns, MyDatabaseHelper.EXERCISES_ID + " = " + id, null, null, null, null);
+			cursor.moveToFirst();
+			Exercise exercise = cursorToExercise(cursor);
+			cursor.close();
+			return exercise;
 		}
 
 		public void deleteExercise(Exercise exercise) {
@@ -55,7 +63,7 @@ public class ExercisesDataSource {
 
 			Cursor cursor = database.query(MyDatabaseHelper.TABLE_EXERCISES,
 					allColumns, null, null, null, null, null);
-
+			
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast()) {
 				Exercise exercise = cursorToExercise(cursor);

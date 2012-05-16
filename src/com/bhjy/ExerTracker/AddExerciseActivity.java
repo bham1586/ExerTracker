@@ -38,14 +38,7 @@ public class AddExerciseActivity extends Activity {
 				
 		        //save the exercise
 				Exercise newExercise = exercisesDB.createExercise(name, description);
-				if(newExercise.getName().equals(name)) {
-					Toast.makeText(getApplicationContext(), name + " saved successfully.",
-			                  Toast.LENGTH_SHORT).show();
-				}
-				else {
-					Toast.makeText(getApplicationContext(), "Save unsuccessful.",
-			                  Toast.LENGTH_SHORT).show();
-				}
+				
 				Intent intent = new Intent();
 	            setResult(RESULT_OK, intent);
 	            finish();
