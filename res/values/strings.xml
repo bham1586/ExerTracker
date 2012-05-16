@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="hello">Hello World, ExerTrackerActivity!</string>
     <string name="app_name">ExerTracker</string>
-<<<<<<< HEAD
     <string name="prompt">Hit &quot;start&quot; to begin workout</string>
-=======
     <string name="exercisesTitle">Select an Exercise</string>
     <string name="plusButton">  +  </string>
     <string name="exerciseNameLabel">Name</string>
     <string name="exerciseDescriptionLabel">Description</string>
     <string name="submitButton">Submit</string>
->>>>>>> e2f596842ed981324ed2b8d7ab6da5957dacdd11
-
 </resources>

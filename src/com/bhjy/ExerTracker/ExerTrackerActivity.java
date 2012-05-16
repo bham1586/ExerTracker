@@ -1,10 +1,8 @@
 package com.bhjy.ExerTracker;
 
 import java.util.List;
-
 import com.bhjy.ExerTracker.Database.ExercisesDataSource;
 import com.bhjy.ExerTracker.Models.Exercise;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,10 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-<<<<<<< HEAD
 import android.widget.ImageButton;
-=======
->>>>>>> e2f596842ed981324ed2b8d7ab6da5957dacdd11
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TabHost;
@@ -26,7 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ExerTrackerActivity extends Activity {
-<<<<<<< HEAD
+	
+	private ExercisesDataSource exercisesDB;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -80,33 +77,10 @@ public class ExerTrackerActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-*/
-=======
+
     
-    private ExercisesDataSource exercisesDB;
     
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        
-        //set up the tab menu
-        TabHost tabs = (TabHost) this.findViewById(R.id.maintabhost);
-        tabs.setup();
-        TabSpec tspec1 = tabs.newTabSpec("Exercise Tab");
-        tspec1.setIndicator("Exercise!");
-        tspec1.setContent(R.id.tab1);
-        tabs.addTab(tspec1);
-        TabSpec tspec2 = tabs.newTabSpec("Second Tab");
-        tspec2.setIndicator("Two");
-        tspec2.setContent(R.id.tab2);
-        tabs.addTab(tspec2);
-        TabSpec tspec3 = tabs.newTabSpec("Third Tab");
-        tspec3.setIndicator("Three");
-        tspec3.setContent(R.id.tab3);
-        tabs.addTab(tspec3);
-        
+           
         //Create the list of exercises
         final String[] EXERCISES = new String[] {"Pushups", "Pullups", "Situps", "Squats"};
         
@@ -128,7 +102,9 @@ public class ExerTrackerActivity extends Activity {
 	        	startActivity(intent);
             }
           });
+       
         
+        /*
         Button addExerciseButton = (Button) this.findViewById(R.id.newExerciseButton);
         addExerciseButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -140,8 +116,8 @@ public class ExerTrackerActivity extends Activity {
 		});
         
         
-    }
-    
+    }*/
+    /*
     @Override
 	protected void onResume() {
 		exercisesDB.open();
@@ -152,6 +128,5 @@ public class ExerTrackerActivity extends Activity {
 	protected void onPause() {
 		exercisesDB.close();
 		super.onPause();
->>>>>>> e2f596842ed981324ed2b8d7ab6da5957dacdd11
-	}
-}
+	}*/
+}}
