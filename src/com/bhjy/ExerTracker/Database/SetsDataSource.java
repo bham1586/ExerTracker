@@ -29,6 +29,8 @@ public class SetsDataSource {
 		private String[] allExerciseColumns = { MyDatabaseHelper.EXERCISES_ID,
 				MyDatabaseHelper.EXERCISES_NAME, MyDatabaseHelper.EXERCISES_DESCRIPTION };
 
+		SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
 		public SetsDataSource(Context context) {
 			dbHelper = new MyDatabaseHelper(context);
 		}
@@ -82,7 +84,6 @@ public class SetsDataSource {
 		}
 
 		private Date convertToDate(String dateTime) {
-			SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = new Date();
 			try {
 				date = (Date) iso8601Format.parse(dateTime);
@@ -93,7 +94,6 @@ public class SetsDataSource {
 		}
 		
 		private String convertDateToString(Date dateTime) {
-			SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String date = "";
 				date = iso8601Format.format(dateTime);
 			
