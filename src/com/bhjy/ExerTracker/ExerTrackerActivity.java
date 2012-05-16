@@ -31,20 +31,12 @@ public class ExerTrackerActivity extends Activity {
 		
 		setContentView(R.layout.main);
 		
-		final ImageButton button = (ImageButton) findViewById(R.id.trackPullupsBtn);
-		button.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				String actionName = "com.bhjy.ExerTracker.ShowMotionCountActivity";
-				Intent intent = new Intent(actionName);
-				startActivity(intent);
-				//setContentView(R.layout.loading);
-			}
-		});
+		createButtonListeners();
+		
 		
 
+		
+		//NOTE:  NO LONGER USING TAB MENU
 		/*
 		//set up the tab menu
 		TabHost tabs = (TabHost) this.findViewById(R.id.maintabhost);
@@ -129,4 +121,28 @@ public class ExerTrackerActivity extends Activity {
 		exercisesDB.close();
 		super.onPause();
 	}*/
-}}
+	}		
+		private void createButtonListeners(){
+			
+			int[] buttons = {R.id.trackPullupsBtn, R.id.trackPushupsBtn, R.id.trackSitupsBtn, R.id.trackSquatsBtn};
+			
+			ImageButton button;
+			
+			for(int i:buttons)
+			{
+				button = (ImageButton) findViewById(i);
+				button.setOnClickListener(new View.OnClickListener() {
+				
+					@Override
+					public void onClick(View v) {
+						String actionName = "com.bhjy.ExerTracker.ShowMotionCountActivity";
+						Intent intent = new Intent(actionName);
+						startActivity(intent);
+						//setContentView(R.layout.loading);
+					}
+				});
+			}
+
+		};
+		
+}

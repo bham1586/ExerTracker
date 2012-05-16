@@ -5,5 +5,4 @@
 	<item android:state_focused="true"
         android:drawable="@drawable/btn_track_situps" />
     <item android:drawable="@drawable/btn_track_situps" />
-    
 </selector>
