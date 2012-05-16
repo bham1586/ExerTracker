@@ -21,38 +21,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ExerTrackerActivity extends Activity {
-	
+
 	private ExercisesDataSource exercisesDB;
-	
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		setContentView(R.layout.main);
-		
-		createButtonListeners();
-		
-		
 
-		
+		setContentView(R.layout.main);
+
+		createButtonListeners();
+	
+	    exercisesDB = new ExercisesDataSource(this);
+        exercisesDB.open();
+
+	}
+
+
+
 		//NOTE:  NO LONGER USING TAB MENU
 		/*
-		//set up the tab menu
-		TabHost tabs = (TabHost) this.findViewById(R.id.maintabhost);
-		tabs.setup();
-		TabSpec tspec1 = tabs.newTabSpec("Exercise Tab");
-		tspec1.setIndicator("Exercise!");
-		tspec1.setContent(R.id.tab1);
-		tabs.addTab(tspec1);
-		TabSpec tspec2 = tabs.newTabSpec("Second Tab");
-		tspec2.setIndicator("Two");
-		tspec2.setContent(R.id.tab2);
-		tabs.addTab(tspec2);
-		TabSpec tspec3 = tabs.newTabSpec("Third Tab");
-		tspec3.setIndicator("Three");
-		tspec3.setContent(R.id.tab3);
-		tabs.addTab(tspec3);
 
 		//Create the list of exercises
 		final String[] EXERCISES = new String[] {"Pushups", "Pullups", "Situps", "Squats"};
@@ -70,17 +59,10 @@ public class ExerTrackerActivity extends Activity {
 			}
 		});
 
-    
-    
-           
-        //Create the list of exercises
-        final String[] EXERCISES = new String[] {"Pushups", "Pullups", "Situps", "Squats"};
-        
-        exercisesDB = new ExercisesDataSource(this);
-        exercisesDB.open();
 
+    
 		List<Exercise> allExercises = exercisesDB.getAllExercises();
-		
+
         ListView exerciseList = (ListView) this.findViewById(R.id.listView1);
         exerciseList.setAdapter(new ArrayAdapter<Exercise>(this, android.R.layout.simple_list_item_1, allExercises));
         //exerciseList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, EXERCISES));
@@ -94,8 +76,8 @@ public class ExerTrackerActivity extends Activity {
 	        	startActivity(intent);
             }
           });
-       
-        
+
+
         /*
         Button addExerciseButton = (Button) this.findViewById(R.id.newExerciseButton);
         addExerciseButton.setOnClickListener(new View.OnClickListener() {
@@ -106,33 +88,35 @@ public class ExerTrackerActivity extends Activity {
 	        	startActivity(intent);				
 			}
 		});
-        
-        
-    }*/
-    /*
-    @Override
-	protected void onResume() {
-		exercisesDB.open();
-		super.onResume();
-	}
 
-	@Override
-	protected void onPause() {
-		exercisesDB.close();
-		super.onPause();
-	}*/
-	}		
+
+    }*/
+
+		@Override
+		protected void onResume() {
+			exercisesDB.open();
+			super.onResume();
+		}
+
+		@Override
+		protected void onPause() {
+			exercisesDB.close();
+			super.onPause();
+		}
+	
+	
+	
 		private void createButtonListeners(){
-			
-			int[] buttons = {R.id.trackPullupsBtn, R.id.trackPushupsBtn, R.id.trackSitupsBtn, R.id.trackSquatsBtn};
-			
+
+			int[] buttonList = {R.id.trackPullupsBtn, R.id.trackPushupsBtn, R.id.trackSitupsBtn, R.id.trackSquatsBtn};
+
 			ImageButton button;
-			
-			for(int i:buttons)
+
+			for(int i:buttonList)
 			{
 				button = (ImageButton) findViewById(i);
 				button.setOnClickListener(new View.OnClickListener() {
-				
+
 					@Override
 					public void onClick(View v) {
 						String actionName = "com.bhjy.ExerTracker.ShowMotionCountActivity";
@@ -144,5 +128,5 @@ public class ExerTrackerActivity extends Activity {
 			}
 
 		};
-		
-}
+
+	}
