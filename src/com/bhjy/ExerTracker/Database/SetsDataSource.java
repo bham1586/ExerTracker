@@ -103,7 +103,6 @@ public class SetsDataSource {
 			set.setId(cursor.getLong(0));
 			//skip one for the exercise Id
 			set.setReps(cursor.getLong(2));
-			Log.d("ExerTracker", "RepCount     = " + set.getReps());
 			set.setStartTime(convertToDate(cursor.getString(3)));
 			set.setDuration(cursor.getLong(4));
 			set.setWeight(cursor.getLong(5));

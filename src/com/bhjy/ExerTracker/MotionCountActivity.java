@@ -93,9 +93,6 @@ public class MotionCountActivity extends Activity implements SensorEventListener
         
 		setListView = (ListView) this.findViewById(R.id.listView1);
 		setList = setsDB.getAllSets(exercise_id);
-		for(Set s:setList)  {
-			Log.d("ExerTracker", "Reps for " + s.getId() + " is " + s.getReps() + " date is " + s.getStartTime());
-		}
 		setListView.setAdapter(new ArrayAdapter<Set>(this, android.R.layout.simple_list_item_1, setList));
         
 	}
