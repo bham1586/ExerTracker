@@ -1,5 +1,12 @@
 package com.bhjy.ExerTracker;
 
+import java.util.Date;
+import java.util.List;
+
+import com.bhjy.ExerTracker.Database.ExercisesDataSource;
+import com.bhjy.ExerTracker.Database.SetsDataSource;
+import com.bhjy.ExerTracker.Models.Set;
+
 import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -7,11 +14,17 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MotionCountActivity extends Activity implements SensorEventListener {
 	private SensorManager sensorManager;
-	
+    private SetsDataSource setsDB;
+    private List<Set> setList;
+    private ListView setListView;
 	final String TAG = "Exercise Tracker";
 	
 	TextView xCoor; // declare X axis object
@@ -40,12 +53,18 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 	
 	int repCount = 0;
 	
+	long exercise_id;
+	Date startTime;
+	long duration = 0;
+	long weight = 0;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.exercisecount);
-
+		Bundle bundle = this.getIntent().getExtras();
+		exercise_id = bundle.getLong("exercise_id");
 		/*
 		xCoor=(TextView)findViewById(R.id.xcoor); // create X axis object
 		yCoor=(TextView)findViewById(R.id.ycoor); // create Y axis object
@@ -62,10 +81,32 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 		*/
 
 		sensorManager=(SensorManager)getSystemService(SENSOR_SERVICE);
-		// add listener. The listener will be HelloAndroid (this) class
-		sensorManager.registerListener(this,
-				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-				SensorManager.SENSOR_DELAY_UI);
+		
+		final ImageButton startButton = (ImageButton) findViewById(R.id.startBtn);
+		final ImageButton stopButton = (ImageButton) findViewById(R.id.stopBtn);
+		stopButton.setVisibility(View.INVISIBLE);
+		
+		startButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startButton.setVisibility(View.INVISIBLE);
+				stopButton.setVisibility(View.VISIBLE);
+				startTracking();
+			}
+		});
+		
+		stopButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startButton.setVisibility(View.VISIBLE);
+				stopButton.setVisibility(View.INVISIBLE);
+				stopTracking();
+			}
+		});
+		
+		
 		/*
 		sensorManager.registerListener(this,
 				sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
@@ -76,8 +117,39 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 			    SENSOR_DELAY_GAME	rate suitable for games
 			 	SENSOR_DELAY_NORMAL	rate (default) suitable for screen orientation changes
 		 */
+		setsDB = new SetsDataSource(this);
+        setsDB.open();
+        
+		setListView = (ListView) this.findViewById(R.id.listView1);
+		setList = setsDB.getAllSets(exercise_id);
+		setListView.setAdapter(new ArrayAdapter<Set>(this, android.R.layout.simple_list_item_1, setList));
+        
 	}
 
+	public void startTracking() {
+		// add listener. The listener will be HelloAndroid (this) class
+		startTime = new Date();
+		repCount = 0;
+		sensorManager.registerListener(this,
+				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+				SensorManager.SENSOR_DELAY_UI);
+
+		accel.setText("Rep Count = "+repCount);
+	}
+	
+	public void stopTracking() {
+		// unregister the listener
+		sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
+		
+		//save the set to the database
+		
+        setsDB.createSet(exercise_id, repCount, startTime, duration, weight, "");
+        setList = setsDB.getAllSets(exercise_id);
+		setListView.setAdapter(new ArrayAdapter<Set>(this, android.R.layout.simple_list_item_1, setList));
+        
+		accel.setText(R.string.prompt);
+	}
+	
 	public void onAccuracyChanged(Sensor sensor,int accuracy){
 		
 	}
@@ -141,6 +213,7 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 					}
 					*/
 					break;
+					/*
 				case Sensor.TYPE_MAGNETIC_FIELD:
 					// assign directions
 					float xm=event.values[0];
@@ -151,8 +224,23 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 					yMag.setText("Y: "+ym);
 					zMag.setText("Z: "+zm);
 					break;
+					*/
 			}
 		}
 		sensorLock = 0;
 	}
+	
+	 @Override
+		protected void onResume() {
+			setsDB.open();
+			setList = setsDB.getAllSets(exercise_id);
+			setListView.setAdapter(new ArrayAdapter<Set>(this, android.R.layout.simple_list_item_1, setList));
+			super.onResume();
+		}
+
+		@Override
+		protected void onPause() {
+			setsDB.close();
+			super.onPause();
+		}
 }

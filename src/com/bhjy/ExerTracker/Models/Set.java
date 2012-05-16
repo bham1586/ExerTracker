@@ -2,6 +2,8 @@ package com.bhjy.ExerTracker.Models;
 
 import java.util.Date;
 
+import android.util.Log;
+
 public class Set {
 	private long id;
 	private long reps;
@@ -24,7 +26,9 @@ public class Set {
 	}
 
 	public void setReps(long reps) {
+		Log.d("ExerTracker", String.valueOf(reps));
 		this.reps = reps;
+		Log.d("ExerTracker", String.valueOf(this.reps));
 	}
 	
 	public Date getStartTime() {
@@ -70,6 +74,7 @@ public class Set {
 	// Will be used by the ArrayAdapter in the ListView
 	@Override
 	public String toString() {
+		Log.d("ExerTracker", String.valueOf(reps));
 		return String.valueOf(reps);
 	}
 }

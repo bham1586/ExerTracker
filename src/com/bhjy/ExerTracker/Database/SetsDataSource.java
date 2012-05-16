@@ -16,6 +16,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class SetsDataSource {
 	// Database fields
@@ -24,6 +26,8 @@ public class SetsDataSource {
 		private String[] allColumns = { MyDatabaseHelper.SETS_ID, MyDatabaseHelper.SETS_EXERCISE_ID,
 				MyDatabaseHelper.SETS_REPS, MyDatabaseHelper.SETS_START_TIME, MyDatabaseHelper.SETS_DURATION,
 				MyDatabaseHelper.SETS_WEIGHT, MyDatabaseHelper.SETS_COMMENTS};
+		private String[] allExerciseColumns = { MyDatabaseHelper.EXERCISES_ID,
+				MyDatabaseHelper.EXERCISES_NAME, MyDatabaseHelper.EXERCISES_DESCRIPTION };
 
 		public SetsDataSource(Context context) {
 			dbHelper = new MyDatabaseHelper(context);
@@ -41,7 +45,7 @@ public class SetsDataSource {
 			ContentValues values = new ContentValues();
 			values.put(MyDatabaseHelper.SETS_EXERCISE_ID, exerciseId);
 			values.put(MyDatabaseHelper.SETS_REPS, reps);
-			values.put(MyDatabaseHelper.SETS_START_TIME, startTime.toString() );
+			values.put(MyDatabaseHelper.SETS_START_TIME, convertDateToString(startTime) );
 			values.put(MyDatabaseHelper.SETS_DURATION, duration);
 			values.put(MyDatabaseHelper.SETS_WEIGHT, weight);
 			values.put(MyDatabaseHelper.SETS_COMMENTS, comments);
@@ -88,11 +92,20 @@ public class SetsDataSource {
 			return date;
 		}
 		
+		private String convertDateToString(Date dateTime) {
+			SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String date = "";
+				date = iso8601Format.format(dateTime);
+			
+			return date;
+		}
+		
 		private Set cursorToSet(Cursor cursor) {
 			Set set = new Set();
 			set.setId(cursor.getLong(0));
 			//skip one for the exercise Id
 			set.setReps(cursor.getLong(2));
+			Log.d("ExerTracker", "RepCount = " + cursor.getLong(2));
 			set.setStartTime(convertToDate(cursor.getString(3)));
 			set.setDuration(cursor.getLong(4));
 			set.setWeight(cursor.getLong(5));
@@ -106,7 +119,7 @@ public class SetsDataSource {
 		
 
 		private Exercise getExercise(long id) {
-			Cursor cursor = database.query(MyDatabaseHelper.TABLE_EXERCISES, allColumns, MyDatabaseHelper.EXERCISES_ID + " = " + id, null, null, null, null);
+			Cursor cursor = database.query(MyDatabaseHelper.TABLE_EXERCISES, allExerciseColumns, MyDatabaseHelper.EXERCISES_ID + " = " + id, null, null, null, null);
 			cursor.moveToFirst();
 			Exercise exercise = cursorToExercise(cursor);
 			cursor.close();

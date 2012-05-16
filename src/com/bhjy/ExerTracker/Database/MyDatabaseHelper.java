@@ -1,5 +1,6 @@
 package com.bhjy.ExerTracker.Database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
@@ -10,7 +11,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 
 	private static final String DATABASE_NAME = "ExerTracker.db";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 4;
 
 	// Database creation sql statements
 	// Exercises table
@@ -27,7 +28,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 	// Sets Table
 	public static final String TABLE_SETS = "sets";
 	public static final String SETS_ID = "_id";
-	public static final String SETS_EXERCISE_ID = "exercise_id";
+	public static final String SETS_EXERCISE_ID = "exerciseId";
 	public static final String SETS_REPS = "reps";
 	public static final String SETS_START_TIME = "startTime";
 	public static final String SETS_DURATION = "duration";
@@ -36,12 +37,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 	private static final String TABLE_SETS_CREATE = "create table "
 			+ TABLE_SETS + "( " 
 			+ SETS_ID + " integer primary key autoincrement, " 
-			+ SETS_EXERCISE_ID + "integer, "
-			+ SETS_REPS + "integer, "
-			+ SETS_START_TIME + "datetime, "
-			+ SETS_DURATION + "integer, "
-			+ SETS_WEIGHT + "integer, "
-			+ SETS_COMMENTS + "text, " 
+			+ SETS_EXERCISE_ID + " integer, "
+			+ SETS_REPS + " integer, "
+			+ SETS_START_TIME + " datetime, "
+			+ SETS_DURATION + " integer, "
+			+ SETS_WEIGHT + " integer, "
+			+ SETS_COMMENTS + " text, " 
 			+ "FOREIGN KEY(" + SETS_EXERCISE_ID + ") REFERENCES " + TABLE_EXERCISES + "(" + EXERCISES_ID + "));";
 	
 	public MyDatabaseHelper(Context context) {
@@ -54,6 +55,21 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 				"Creating Database.");
 		db.execSQL(TABLE_EXERCISES_CREATE);
 		db.execSQL(TABLE_SETS_CREATE);
+
+		ContentValues values = new ContentValues();
+		values.put(EXERCISES_NAME, "pull-ups");
+		values.put(EXERCISES_DESCRIPTION, "");
+		db.insertOrThrow(MyDatabaseHelper.TABLE_EXERCISES, null, values);
+		values.put(EXERCISES_NAME, "pushups");
+		values.put(EXERCISES_DESCRIPTION, "");
+		db.insertOrThrow(MyDatabaseHelper.TABLE_EXERCISES, null, values);
+		values.put(EXERCISES_NAME, "sit-ups");
+		values.put(EXERCISES_DESCRIPTION, "");
+		db.insertOrThrow(MyDatabaseHelper.TABLE_EXERCISES, null, values);
+		values.put(EXERCISES_NAME, "squats");
+		values.put(EXERCISES_DESCRIPTION, "");
+		db.insertOrThrow(MyDatabaseHelper.TABLE_EXERCISES, null, values);
+		
 	}
 
 	@Override
@@ -62,6 +78,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 				"Upgrading database from version " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXERCISES);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_SETS);
 		onCreate(db);
 	}
 
