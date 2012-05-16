@@ -26,9 +26,7 @@ public class Set {
 	}
 
 	public void setReps(long reps) {
-		Log.d("ExerTracker", String.valueOf(reps));
 		this.reps = reps;
-		Log.d("ExerTracker", String.valueOf(this.reps));
 	}
 	
 	public Date getStartTime() {
@@ -52,7 +50,7 @@ public class Set {
 	}
 
 	public void setWeight(long weight) {
-		this.reps = weight;
+		this.weight = weight;
 	}
 	
 	public String getComments() {
@@ -74,7 +72,7 @@ public class Set {
 	// Will be used by the ArrayAdapter in the ListView
 	@Override
 	public String toString() {
-		Log.d("ExerTracker", String.valueOf(reps));
+		Log.d("ExerTracker", String.valueOf(getReps()));
 		return String.valueOf(reps);
 	}
 }

@@ -94,9 +94,7 @@ public class SetsDataSource {
 		}
 		
 		private String convertDateToString(Date dateTime) {
-			String date = "";
-				date = iso8601Format.format(dateTime);
-			
+			String date = iso8601Format.format(dateTime);
 			return date;
 		}
 		
@@ -105,7 +103,7 @@ public class SetsDataSource {
 			set.setId(cursor.getLong(0));
 			//skip one for the exercise Id
 			set.setReps(cursor.getLong(2));
-			Log.d("ExerTracker", "RepCount = " + cursor.getLong(2));
+			Log.d("ExerTracker", "RepCount     = " + set.getReps());
 			set.setStartTime(convertToDate(cursor.getString(3)));
 			set.setDuration(cursor.getLong(4));
 			set.setWeight(cursor.getLong(5));
