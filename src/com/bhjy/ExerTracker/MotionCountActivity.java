@@ -64,25 +64,25 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 		sensorManager=(SensorManager)getSystemService(SENSOR_SERVICE);
 		
 		final ImageButton startButton = (ImageButton) findViewById(R.id.startBtn);
-		final ImageButton stopButton = (ImageButton) findViewById(R.id.stopBtn);
-		stopButton.setVisibility(View.INVISIBLE);
+		final ImageButton doneButton = (ImageButton) findViewById(R.id.doneBtn);
+		doneButton.setVisibility(View.INVISIBLE);
 		
 		startButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				startButton.setVisibility(View.INVISIBLE);
-				stopButton.setVisibility(View.VISIBLE);
+				doneButton.setVisibility(View.VISIBLE);
 				startTracking();
 			}
 		});
 		
-		stopButton.setOnClickListener(new View.OnClickListener() {
+		doneButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				startButton.setVisibility(View.VISIBLE);
-				stopButton.setVisibility(View.INVISIBLE);
+				doneButton.setVisibility(View.INVISIBLE);
 				stopTracking();
 			}
 		});

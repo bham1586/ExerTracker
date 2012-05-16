@@ -61,19 +61,29 @@
         android:src="@drawable/start_button" />
 
     <ImageButton
-        android:id="@+id/stopBtn"
+        android:id="@+id/doneBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/accel"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:background="@null"
-        android:src="@drawable/stop_button" />
+        android:src="@drawable/done_button" />
     
     <ListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/stopBtn">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/setHeader">
     </ListView>
+
+    <TextView
+        android:id="@+id/setHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/doneBtn"
+        android:layout_centerHorizontal="true"
+        android:text="Today's sets"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
 </RelativeLayout>
