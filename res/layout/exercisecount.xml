@@ -69,12 +69,14 @@
         android:layout_marginTop="50dp"
         android:background="@null"
         android:src="@drawable/done_button" />
-    
+    
     <ListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/setHeader">
+        android:layout_above="@+id/icon_bar"
+        android:layout_below="@+id/setHeader" >
+
     </ListView>
 
     <TextView
