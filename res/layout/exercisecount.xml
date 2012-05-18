@@ -21,7 +21,7 @@
         android:tileMode="repeat"
         android:background="@drawable/bg_icons" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/progressIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:background="@null"
         android:src="@drawable/icon_progress" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/userIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         android:background="@null"
         android:src="@drawable/icon_user" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/trackerIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -30,6 +30,18 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <activity android:name="ProgressActivity">
+            <intent-filter>
+                <action android:name="com.bhjy.ExerTracker.ShowProgressActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="RecordsActivity">
+            <intent-filter>
+                <action android:name="com.bhjy.ExerTracker.ShowRecordsActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

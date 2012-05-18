@@ -3,7 +3,9 @@ package com.bhjy.ExerTracker.Database;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import com.bhjy.ExerTracker.Database.MyDatabaseHelper;
@@ -82,6 +84,33 @@ public class SetsDataSource {
 			cursor.close();
 			return sets;
 		}
+		
+		public List<Set> getAllSetsToday(long exerciseId) {
+			List<Set> sets = new ArrayList<Set>();
+			Date now = new Date();
+			Date today = new Date();
+			today.setHours(0);
+			today.setMinutes(0);
+			today.setSeconds(0);
+			Log.d("ExerTracker", "Now = " + convertDateToString(now));
+			Log.d("ExerTracker", "Today = " + convertDateToString(today));
+			Cursor cursor = database.query(MyDatabaseHelper.TABLE_SETS,
+					allColumns, MyDatabaseHelper.SETS_EXERCISE_ID + " == " + String.valueOf(exerciseId) 
+					+ " and " + MyDatabaseHelper.SETS_START_TIME + " >= '" + convertDateToString(today) + "'"
+					, null, null, null, null);
+			
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()) {
+				Set set = cursorToSet(cursor);
+				sets.add(set);
+				cursor.moveToNext();
+			}
+			
+			// Make sure to close the cursor
+			cursor.close();
+			
+			return sets;
+		}
 
 		private Date convertToDate(String dateTime) {
 			Date date = new Date();
@@ -104,6 +133,7 @@ public class SetsDataSource {
 			//skip one for the exercise Id
 			set.setReps(cursor.getLong(2));
 			set.setStartTime(convertToDate(cursor.getString(3)));
+			Log.d("ExerTracker", set.getId() + " = " + cursor.getString(3));
 			set.setDuration(cursor.getLong(4));
 			set.setWeight(cursor.getLong(5));
 			set.setComments(cursor.getString(6));

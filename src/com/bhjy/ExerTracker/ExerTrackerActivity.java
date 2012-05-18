@@ -3,10 +3,13 @@ package com.bhjy.ExerTracker;
 import java.util.List;
 
 import com.bhjy.ExerTracker.Database.ExercisesDataSource;
+import com.bhjy.ExerTracker.Database.MyDatabaseHelper;
 import com.bhjy.ExerTracker.Models.Exercise;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -121,6 +124,43 @@ public class ExerTrackerActivity extends Activity {
 			});
 			
 		}
+		
+		
+		//create the progress Icon
+		button = (ImageButton) findViewById(R.id.progressIcon);
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String actionName = "com.bhjy.ExerTracker.ShowProgressActivity";
+				Intent intent = new Intent(actionName);
+				startActivity(intent);
+			}
+		});
+		
+		/* DON'T MAKE THIS BUTTON CLICKABLE WHEN ON THIS SCREEN
+		//create the tracker icon that goes to the main screen
+		button = (ImageButton) findViewById(R.id.trackerIcon);
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getBaseContext(), ExerTrackerActivity.class);
+				startActivity(intent);
+			}
+		});
+		*/
+		
+		/*
+		//create the records button
+		button = (ImageButton) findViewById(R.id.recordsIcon);
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String actionName = "com.bhjy.ExerTracker.ShowRecordsActivity";
+				Intent intent = new Intent(actionName);
+				startActivity(intent);
+			}
+		});
+		*/
 
 	};
 	

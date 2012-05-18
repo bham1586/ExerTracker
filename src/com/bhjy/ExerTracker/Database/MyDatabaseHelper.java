@@ -1,5 +1,9 @@
 package com.bhjy.ExerTracker.Database;
 
+import java.util.List;
+
+import com.bhjy.ExerTracker.Models.Exercise;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -81,5 +85,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_SETS);
 		onCreate(db);
 	}
+	
+	
 
 }

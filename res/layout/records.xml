@@ -13,44 +13,6 @@
         android:scaleType="fitXY"
         android:src="@drawable/background" />
 
-    <ImageButton
-        android:id="@+id/trackPullupsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:background="@null"
-        android:src="@drawable/track_pullups" />
-
-    <ImageButton
-        android:id="@+id/trackPushupsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/trackPullupsBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:background="@null"
-        android:src="@drawable/track_pushups" />
-
-    <ImageButton
-        android:id="@+id/trackSitupsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/trackPushupsBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:background="@null"
-        android:src="@drawable/track_situps" />
-    
-    <ImageButton
-        android:id="@+id/trackSquatsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/trackSitupsBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:background="@null"
-        android:src="@drawable/track_squats" />
     
     
     <ImageView
@@ -69,7 +31,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:background="@null"
-        android:src="@drawable/icon_progress" />
+        android:src="@drawable/icon_progress_active" />
 
     <ImageButton
         android:id="@+id/userIcon"
@@ -87,6 +49,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@null"
-        android:src="@drawable/icon_trackr_active" />
+        android:src="@drawable/icon_trackr" />
 
 </RelativeLayout>

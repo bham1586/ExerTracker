@@ -8,6 +8,7 @@ import com.bhjy.ExerTracker.Database.SetsDataSource;
 import com.bhjy.ExerTracker.Models.Set;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -51,18 +52,33 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
-
 		super.onCreate(savedInstanceState);
+		//set the layout
 		setContentView(R.layout.exercisecount);
+		//get the exercise ID
 		Bundle bundle = this.getIntent().getExtras();
 		exercise_id = bundle.getLong("exercise_id");
 		
-		
+		//get the text view that will display the rep count
 		accel=(TextView)findViewById(R.id.accel); // create acceleration object
 		
-		
+		//set up the sensor manager
 		sensorManager=(SensorManager)getSystemService(SENSOR_SERVICE);
 		
+		//set up the buttons
+		createButtonListeners();
+		
+		//connect to the database
+		setsDB = new SetsDataSource(this);
+        setsDB.open();
+        
+        //set up the list of sets from today
+		setListView = (ListView) this.findViewById(R.id.listView1);
+		displaySetsFromToday();
+        
+	}
+	
+	private void createButtonListeners(){
 		final ImageButton startButton = (ImageButton) findViewById(R.id.startBtn);
 		final ImageButton doneButton = (ImageButton) findViewById(R.id.doneBtn);
 		doneButton.setVisibility(View.INVISIBLE);
@@ -87,24 +103,56 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 			}
 		});
 		
+ImageButton button;
 		
-		setsDB = new SetsDataSource(this);
-        setsDB.open();
-        
-		setListView = (ListView) this.findViewById(R.id.listView1);
-		setList = setsDB.getAllSets(exercise_id);
-		setListView.setAdapter(new ArrayAdapter<Set>(this, android.R.layout.simple_list_item_1, setList));
-        
-	}
+		
+		//create the progress Icon
+		button = (ImageButton) findViewById(R.id.progressIcon);
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String actionName = "com.bhjy.ExerTracker.ShowProgressActivity";
+				Intent intent = new Intent(actionName);
+				startActivity(intent);
+			}
+		});
+		
+		//create the tracker icon that goes to the main screen
+		button = (ImageButton) findViewById(R.id.trackerIcon);
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getBaseContext(), ExerTrackerActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		/*
+		//create the records button
+		button = (ImageButton) findViewById(R.id.recordsIcon);
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String actionName = "com.bhjy.ExerTracker.ShowRecordsActivity";
+				Intent intent = new Intent(actionName);
+				startActivity(intent);
+			}
+		});
+		*/
+
+	};
 
 	public void startTracking() {
-		// add listener. The listener will be HelloAndroid (this) class
+		//set the startTime and set the reps to 0
 		startTime = new Date();
 		repCount = 0;
+		
+		//register the accelerometer listener. This is how the motion detection will start
 		sensorManager.registerListener(this,
 				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
 				SensorManager.SENSOR_DELAY_UI);
-
+		
+		//display the rep count (0)
 		accel.setText("Rep Count = "+repCount);
 	}
 	
@@ -113,11 +161,12 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 		sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
 		
 		//save the set to the database
-		
-        setsDB.createSet(exercise_id, repCount, startTime, duration, weight, "");
-        setList = setsDB.getAllSets(exercise_id);
-		setListView.setAdapter(new ArrayAdapter<Set>(this, android.R.layout.simple_list_item_1, setList));
+		if(repCount > 0) {
+	        setsDB.createSet(exercise_id, repCount, startTime, duration, weight, "");
+			displaySetsFromToday();
+		}
         
+		//remove the rep count display and tell the user to press start when ready
 		accel.setText(R.string.prompt);
 	}
 	
@@ -131,27 +180,32 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 			// check sensor type
 			switch (event.sensor.getType()) {
 				case Sensor.TYPE_ACCELEROMETER:
-	
+					//the accelerometer has changed
 					
+					//save the previous acceleration
 					lastAccel = totalAccel;
-					// assign directions
+					
+					//get the acceleration in each direction, then compute the total acceleration
 					ax=event.values[0];
 					ay=event.values[1];
 					az=event.values[2];
 					totalAccel = (float)Math.sqrt(ax*ax + ay*ay + az*az);
 	
-					
+					//check if the acceleration is above the threshold
 					if(Math.abs(totalAccel - gravity) > threshhold) {
 						if(totalAccel > gravity && aboveGravity == 0) {
-							//going up
+							//the acceleration is much greater than gravity, so the device is moving in the 
+							//opposite direction of gravity (going up)
 							aboveGravity = 1;
 							//Log.d(TAG, "Reached Bottom: accel = "+totalAccel);
 						}
 						else if(totalAccel < gravity && aboveGravity == 1) {
-							//going down
+							//the acceleration is much less than gravity, so the device is moving in the 
+							//same direction as gravity (going down)
 							aboveGravity = 0;
 							repCount++;
 							//Log.d(TAG, "Reached Top: accel = "+totalAccel);
+							//show the rep count on the screen
 							accel.setText("Rep Count = "+repCount);
 						}
 					}
@@ -165,15 +219,25 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 	
 	 @Override
 		protected void onResume() {
+		 	//open the database
 			setsDB.open();
-			setList = setsDB.getAllSets(exercise_id);
-			setListView.setAdapter(new ArrayAdapter<Set>(this, android.R.layout.simple_list_item_1, setList));
+			//update the list of today's sets
+			displaySetsFromToday();
 			super.onResume();
 		}
 
 		@Override
 		protected void onPause() {
+			// unregister the listener
+			sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
+			//close the database
 			setsDB.close();
 			super.onPause();
+		}
+		
+		protected void displaySetsFromToday() {
+			//this function gets all sets of this exercise today, then displays it in the listView
+			setList = setsDB.getAllSetsToday(exercise_id);
+			setListView.setAdapter(new ArrayAdapter<Set>(this, android.R.layout.simple_list_item_1, setList));
 		}
 }
