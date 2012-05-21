@@ -31,13 +31,13 @@
         android:src="@drawable/icon_progress" />
 
     <ImageButton
-        android:id="@+id/userIcon"
+        android:id="@+id/recordsIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@null"
-        android:src="@drawable/icon_user" />
+        android:src="@drawable/icon_records" />
 
     <ImageButton
         android:id="@+id/trackerIcon"
