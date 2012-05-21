@@ -84,7 +84,7 @@ public class ProgressActivity extends Activity {
 			}
 		});
 		
-		/*
+		
 		//create the records button
 		button = (ImageButton) findViewById(R.id.recordsIcon);
 		button.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +95,7 @@ public class ProgressActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-		*/
+		
 
 	};
 	

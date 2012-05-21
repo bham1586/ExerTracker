@@ -127,7 +127,7 @@ ImageButton button;
 			}
 		});
 		
-		/*
+		
 		//create the records button
 		button = (ImageButton) findViewById(R.id.recordsIcon);
 		button.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +138,7 @@ ImageButton button;
 				startActivity(intent);
 			}
 		});
-		*/
+		
 
 	};
 
