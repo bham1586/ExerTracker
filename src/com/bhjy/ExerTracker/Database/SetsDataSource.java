@@ -87,13 +87,10 @@ public class SetsDataSource {
 		
 		public List<Set> getAllSetsToday(long exerciseId) {
 			List<Set> sets = new ArrayList<Set>();
-			Date now = new Date();
 			Date today = new Date();
 			today.setHours(0);
 			today.setMinutes(0);
 			today.setSeconds(0);
-			Log.d("ExerTracker", "Now = " + convertDateToString(now));
-			Log.d("ExerTracker", "Today = " + convertDateToString(today));
 			Cursor cursor = database.query(MyDatabaseHelper.TABLE_SETS,
 					allColumns, MyDatabaseHelper.SETS_EXERCISE_ID + " == " + String.valueOf(exerciseId) 
 					+ " and " + MyDatabaseHelper.SETS_START_TIME + " >= '" + convertDateToString(today) + "'"
@@ -110,6 +107,65 @@ public class SetsDataSource {
 			cursor.close();
 			
 			return sets;
+		}
+		
+		public Set getMaxRepsInSet(long exerciseId) {
+			//get the maximum number of reps in a single set
+			Cursor cursor = database.rawQuery("Select Max(" + MyDatabaseHelper.SETS_REPS + ") from " + MyDatabaseHelper.TABLE_SETS 
+					+ " where " + MyDatabaseHelper.SETS_EXERCISE_ID + " == " + String.valueOf(exerciseId), null);
+			cursor.moveToFirst();
+			//select the first set with that many reps
+			cursor = database.rawQuery("SELECT TOP 1 from " + MyDatabaseHelper.TABLE_SETS + " where " + MyDatabaseHelper.SETS_REPS + " == " + cursor.getLong(0)
+					+ " where " + MyDatabaseHelper.SETS_EXERCISE_ID + " == " + String.valueOf(exerciseId), null);
+							
+			cursor.moveToFirst();
+			
+			Set bestSet = new Set();
+			while (!cursor.isAfterLast()) {
+				bestSet = cursorToSet(cursor);
+			}
+			
+			// Make sure to close the cursor
+			cursor.close();
+			
+			return bestSet;
+		}
+		
+		public Set getMaxRepsInDay(long exerciseId) {
+			//first get all of the sets
+			List<Set> allSets = getAllSets(exerciseId);
+			Date lastDate = new Date();
+        	Date dateOfMostReps = new Date();
+        	int repsInDay = 0;
+        	int maxRepsInDay = 0;
+        	for(final Set set:allSets) {
+        		if(lastDate.getDate() != set.getStartTime().getDate()) {
+        			//check if last date was a record
+        			if(repsInDay > maxRepsInDay) {
+        				dateOfMostReps.setDate(lastDate.getDate());
+        				maxRepsInDay = repsInDay;
+        			}
+        			//set lastdate to this date
+        			lastDate.setDate(set.getStartTime().getDate());
+        			
+        			//reset repsInDay
+        			repsInDay = 0;
+        		}
+        		//add reps to current day
+        		repsInDay += set.getReps();
+        	}
+        	//check if the last day was the best
+        	if(repsInDay > maxRepsInDay) {
+				dateOfMostReps.setDate(lastDate.getDate());
+				maxRepsInDay = repsInDay;
+			}
+        	
+			//create a set that details the most reps in one day
+        	Set bestSet = new Set();
+        	bestSet.setStartTime(dateOfMostReps);
+        	bestSet.setReps(maxRepsInDay);
+        	
+			return bestSet;
 		}
 
 		private Date convertToDate(String dateTime) {

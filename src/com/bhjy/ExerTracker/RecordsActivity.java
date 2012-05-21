@@ -31,7 +31,6 @@ public class RecordsActivity extends Activity {
     private ExercisesDataSource exercisesDB;
     private SetsDataSource setsDB;
     private List<Exercise> allExercises;
-    private ListView exerciseList;
     private List<Set> allSets; 
     /** Called when the activity is first created. */
     @Override
@@ -43,14 +42,41 @@ public class RecordsActivity extends Activity {
         //connect to the database
         exercisesDB = new ExercisesDataSource(this);
         setsDB = new SetsDataSource(this);
+        exercisesDB.open();
+        setsDB.open();
+        allExercises = exercisesDB.getAllExercises();
         
         //set up the buttons
         createButtonListeners();
         
-        //add functionality here
-        //
-        //
-        
+        TextView tv;
+        for(final Exercise e:allExercises)
+		{
+        	allSets = setsDB.getAllSets(e.getId());
+        	Date lastDate = new Date();
+        	Date dateOfMostRepsInDay = new Date();
+        	Date dateOfMostRepsInSet = new Date();
+        	int repsInDay = 0;
+        	int maxRepsInDay = 0;
+        	int maxRepsInSet = 0;
+        	for(final Set set:allSets) {
+        		if(lastDate.getDate() != set.getStartTime().getDate()) {
+        			//check if last date was a record
+        			
+        			//set lastdate to this date
+        			
+        			//reset repsInDay
+        			
+        		}
+        		//check if reps in set is greater than record
+        		
+        		//add reps to current day
+        		
+        	}
+        	//display results in the text views
+            tv = (TextView) this.findViewById(R.id.MostPullupsInDay);
+            tv.setText(maxReps "");
+		}
     }
     
     private void createButtonListeners(){

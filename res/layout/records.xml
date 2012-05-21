@@ -51,4 +51,141 @@
         android:background="@null"
         android:src="@drawable/icon_trackr" />
 
+    <TextView
+        android:id="@+id/MostPullupsInDayTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Most pull-ups in one day:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/MostPullupsInDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MostPullupsInDayTitle"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/MostPullupsInSetTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MostPullupsInDay"
+        android:text="Most pull-ups at one time:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/MostPullupsInSet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MostPullupsInSetTitle"
+        android:text="" />
+    
+    <TextView
+        android:id="@+id/MostPushupsInDayTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="Most pushups in one day:"
+        android:layout_below="@+id/MostPullupsInSet"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/MostPushupsInDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MostPushupsInDayTitle"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/MostPushupsInSetTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MostPushupsInDay"
+        android:text="Most pushups at one time:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/MostPushupsInSet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MostPushupsInSetTitle"
+        android:text="" />
+    
+    <TextView
+        android:id="@+id/MostSitupsInDayTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MostPushupsInSet"
+        android:text="Most sit-ups in one day:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/MostSitupsInDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MostSitupsInDayTitle"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/MostSitupsInSetTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MostSitupsInDay"
+        android:text="Most sit-ups at one time:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/MostSitupsInSet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MostSitupsInSetTitle"
+        android:text="" />
+    
+    <TextView
+        android:id="@+id/MostSquatsInDayTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MostSitupsInSet"
+        android:text="Most squats in one day:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/MostSquatsInDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MostSquatsInDayTitle"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/MostSquatsInSetTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MostSquatsInDay"
+        android:text="Most squats at one time:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/MostSquatsInSet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MostSquatsInSetTitle"
+        android:text="" />
+
+
 </RelativeLayout>
