@@ -8,12 +8,16 @@ import com.bhjy.ExerTracker.Database.SetsDataSource;
 import com.bhjy.ExerTracker.Models.Set;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -50,6 +54,9 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 	long duration = 0;
 	long weight = 0;
 	
+	SharedPreferences mPrefs;
+	final String showMotionHelpScreenPref = "showMotionHelpScreen";
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -75,6 +82,26 @@ public class MotionCountActivity extends Activity implements SensorEventListener
         //set up the list of sets from today
 		setListView = (ListView) this.findViewById(R.id.listView1);
 		displaySetsFromToday();
+		
+		//find out if the motion help screen should be shown
+		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+		Boolean showMotionHelpScreen = mPrefs.getBoolean(showMotionHelpScreenPref, true);
+		if(showMotionHelpScreen) {
+			//display the motion help screen
+			new AlertDialog.Builder(this).setIcon(R.drawable.ic_launcher).setTitle(R.string.motionHelpTitle).setMessage(R.string.motionHelpMessage)
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				}).show();
+			//set the screen to not show again
+			SharedPreferences.Editor editor = mPrefs.edit();
+			editor.putBoolean(showMotionHelpScreenPref, false);
+			editor.commit();
+		}
         
 	}
 	

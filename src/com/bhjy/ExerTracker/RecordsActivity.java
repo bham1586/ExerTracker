@@ -1,5 +1,6 @@
 package com.bhjy.ExerTracker;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -32,6 +34,7 @@ public class RecordsActivity extends Activity {
     private SetsDataSource setsDB;
     private List<Exercise> allExercises;
     private List<Set> allSets; 
+    SimpleDateFormat displayableDateFormat = new SimpleDateFormat("MMM dd, yyyy");
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,29 @@ public class RecordsActivity extends Activity {
         //set up the buttons
         createButtonListeners();
         
-        TextView tv;
+        Set set;
+        set = setsDB.getMaxRepsInDay(allExercises.get(0).getId());
+        displaySingleRecord(R.id.MostPullupsInDay, set);
+        set = setsDB.getMaxRepsInSet(allExercises.get(0).getId());
+        displaySingleRecord(R.id.MostPullupsInSet, set);
+        set = setsDB.getMaxRepsInDay(allExercises.get(1).getId());
+        displaySingleRecord(R.id.MostPushupsInDay, set);
+        set = setsDB.getMaxRepsInSet(allExercises.get(1).getId());
+        displaySingleRecord(R.id.MostPushupsInSet, set);
+        set = setsDB.getMaxRepsInDay(allExercises.get(2).getId());
+        displaySingleRecord(R.id.MostSitupsInDay, set);
+        set = setsDB.getMaxRepsInSet(allExercises.get(2).getId());
+        displaySingleRecord(R.id.MostSitupsInSet, set);
+        set = setsDB.getMaxRepsInDay(allExercises.get(3).getId());
+        displaySingleRecord(R.id.MostSquatsInDay, set);
+        set = setsDB.getMaxRepsInSet(allExercises.get(3).getId());
+        displaySingleRecord(R.id.MostSquatsInSet, set);
+        
+        //TextView tv;
+        //tv = (TextView) this.findViewById(R.id.MostPullupsInDay);
+        //tv.setText("    " + String.valueOf(set.getReps()) + " reps on " + setsDB.convertDateToString(set.getStartTime()).substring(0, 10) + "\n");
+        
+        /*
         for(final Exercise e:allExercises)
 		{
         	allSets = setsDB.getAllSets(e.getId());
@@ -77,7 +102,20 @@ public class RecordsActivity extends Activity {
             tv = (TextView) this.findViewById(R.id.MostPullupsInDay);
             tv.setText(maxReps "");
 		}
+		*/
     }
+    
+    private void displaySingleRecord(int viewId, Set set) {
+    	 TextView tv;
+         tv = (TextView) this.findViewById(viewId);
+         Log.d("ExerTracker", String.valueOf(set.getStartTime()));
+         tv.setText("    " + String.valueOf(set.getReps()) + " reps on " + convertDateForDisplay(set.getStartTime()) + "\n");
+    }
+    
+    public String convertDateForDisplay(Date dateTime) {
+		String date = displayableDateFormat.format(dateTime);
+		return date;
+	}
     
     private void createButtonListeners(){
 

@@ -85,6 +85,55 @@ public class SetsDataSource {
 			return sets;
 		}
 		
+		public List<Set> getTotalRepsByDate(long exerciseId) {
+			List<Set> sets = new ArrayList<Set>();
+
+			Cursor cursor = database.rawQuery("Select * from " + MyDatabaseHelper.TABLE_SETS + " where " + MyDatabaseHelper.SETS_EXERCISE_ID + " == " + String.valueOf(exerciseId) + " order by " + MyDatabaseHelper.SETS_START_TIME + " asc", null);
+			
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()) {
+				Set set = cursorToSet(cursor);
+				sets.add(set);
+				cursor.moveToNext();
+			}
+			// Make sure to close the cursor
+			cursor.close();
+			List<Set> repsByDay = new ArrayList<Set>();
+			Date lastDate = new Date();
+        	int repsInDay = 0;
+        	int first = 1;
+			for(final Set set:sets) {
+				if(first > 0) {
+					//set lastdate to this date
+        			lastDate.setTime(set.getStartTime().getTime());
+        			
+        			first = 0;
+				}
+				else if(lastDate.getDate() != set.getStartTime().getDate()) {
+        			Set newSet = new Set();
+        			newSet.setReps(repsInDay);
+        			newSet.setStartTime(lastDate);
+        			Log.d("ExerTracker", set.getId() + " = " + lastDate.getTime() + " " + convertDateToString(newSet.getStartTime()));
+        			repsByDay.add(newSet);
+        			
+        			//set lastdate to this date
+        			lastDate.setTime(set.getStartTime().getTime());
+        			
+        			//reset repsInDay
+        			repsInDay = 0;
+        		}
+        		//add reps to current day
+        		repsInDay += set.getReps();
+        	}
+
+			Set newSet = new Set();
+			newSet.setReps(repsInDay);
+			newSet.setStartTime(lastDate);
+			repsByDay.add(newSet);
+			
+			return repsByDay;
+		}
+		
 		public List<Set> getAllSetsToday(long exerciseId) {
 			List<Set> sets = new ArrayList<Set>();
 			Date today = new Date();
@@ -115,13 +164,13 @@ public class SetsDataSource {
 					+ " where " + MyDatabaseHelper.SETS_EXERCISE_ID + " == " + String.valueOf(exerciseId), null);
 			cursor.moveToFirst();
 			//select the first set with that many reps
-			cursor = database.rawQuery("SELECT TOP 1 from " + MyDatabaseHelper.TABLE_SETS + " where " + MyDatabaseHelper.SETS_REPS + " == " + cursor.getLong(0)
-					+ " where " + MyDatabaseHelper.SETS_EXERCISE_ID + " == " + String.valueOf(exerciseId), null);
+			cursor = database.rawQuery("SELECT * from " + MyDatabaseHelper.TABLE_SETS + " where " + MyDatabaseHelper.SETS_REPS + " == " + cursor.getLong(0)
+					+ " and " + MyDatabaseHelper.SETS_EXERCISE_ID + " == " + String.valueOf(exerciseId), null);
 							
 			cursor.moveToFirst();
 			
 			Set bestSet = new Set();
-			while (!cursor.isAfterLast()) {
+			if (!cursor.isAfterLast()) {
 				bestSet = cursorToSet(cursor);
 			}
 			
@@ -138,8 +187,12 @@ public class SetsDataSource {
         	Date dateOfMostReps = new Date();
         	int repsInDay = 0;
         	int maxRepsInDay = 0;
+        	long timeInDay = 86400000;
         	for(final Set set:allSets) {
-        		if(lastDate.getDate() != set.getStartTime().getDate()) {
+        		set.getStartTime().setHours(0);
+        		set.getStartTime().setMinutes(0);
+        		set.getStartTime().setSeconds(0);
+        		if(Math.abs(lastDate.getTime() - set.getStartTime().getTime()) >= timeInDay) {
         			//check if last date was a record
         			if(repsInDay > maxRepsInDay) {
         				dateOfMostReps.setDate(lastDate.getDate());
@@ -168,7 +221,7 @@ public class SetsDataSource {
 			return bestSet;
 		}
 
-		private Date convertToDate(String dateTime) {
+		public Date convertToDate(String dateTime) {
 			Date date = new Date();
 			try {
 				date = (Date) iso8601Format.parse(dateTime);
@@ -178,7 +231,7 @@ public class SetsDataSource {
 			return date;
 		}
 		
-		private String convertDateToString(Date dateTime) {
+		public String convertDateToString(Date dateTime) {
 			String date = iso8601Format.format(dateTime);
 			return date;
 		}
@@ -189,7 +242,6 @@ public class SetsDataSource {
 			//skip one for the exercise Id
 			set.setReps(cursor.getLong(2));
 			set.setStartTime(convertToDate(cursor.getString(3)));
-			Log.d("ExerTracker", set.getId() + " = " + cursor.getString(3));
 			set.setDuration(cursor.getLong(4));
 			set.setWeight(cursor.getLong(5));
 			set.setComments(cursor.getString(6));

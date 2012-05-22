@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory android:title="Accelerometer Sensitivity">
+        <ListPreference android:key="motionSensitivityPreference" android:title="Motion Sensitivity" android:dialogTitle="Motion Sensitivity" android:entries="@array/sensitivityPreferenceEntries" android:entryValues="@array/sensitivityPreferenceValues"/>
+        
+    </PreferenceCategory>
+    
+
+</PreferenceScreen>

@@ -42,6 +42,12 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <activity android:name="ExerTrackerPreferences">
+            <intent-filter>
+                <action android:name="android.settings.SETTINGS"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

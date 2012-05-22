@@ -8,7 +8,7 @@ import android.util.Log;
 public class Set {
 	private long id;
 	private long reps;
-	private Date startTime;
+	private Date startTime = new Date();
 	private long duration;
 	private long weight;
 	private String comments;
@@ -35,7 +35,7 @@ public class Set {
 	}
 
 	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
+		this.startTime.setTime(startTime.getTime());
 	}
 	
 	public long getDuration() {
