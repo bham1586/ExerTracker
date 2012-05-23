@@ -17,10 +17,12 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -44,6 +46,7 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 	double gravity = 9.8;
 	int aboveGravity = 0;
 	int direction = 0;
+	int sensitivity = 3;
 	
 	int sensorLock = 0;
 	
@@ -56,6 +59,8 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 	
 	SharedPreferences mPrefs;
 	final String showMotionHelpScreenPref = "showMotionHelpScreen";
+	final String motionSensitivityPreference = "motionSensitivityPreference";
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -102,7 +107,11 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 			editor.putBoolean(showMotionHelpScreenPref, false);
 			editor.commit();
 		}
-        
+		
+		//get the sensitivity setting
+		sensitivity = Integer.valueOf(mPrefs.getString(motionSensitivityPreference, "3"));
+		threshhold = (float) (1.6 - (float) sensitivity / 5);
+        //Log.d("ExerTracker", String.valueOf(sensitivity) + " " + String.valueOf(threshhold));
 	}
 	
 	private void createButtonListeners(){
@@ -166,6 +175,15 @@ ImageButton button;
 			}
 		});
 		
+		final Button settingsButton = (Button) findViewById(R.id.settingsButton);
+		settingsButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String actionName = "com.bhjy.ExerTracker.ShowPreferencesActivity";
+				Intent intent = new Intent(actionName);
+				startActivity(intent);
+			}
+		});
 
 	};
 
@@ -202,13 +220,13 @@ ImageButton button;
 	}
 
 	public void onSensorChanged(SensorEvent event){
+		//need to create a lock so this function doesn't run multiple instances simultaneously
 		if(sensorLock == 0) {
 			sensorLock = 1;
 			// check sensor type
 			switch (event.sensor.getType()) {
 				case Sensor.TYPE_ACCELEROMETER:
 					//the accelerometer has changed
-					
 					//save the previous acceleration
 					lastAccel = totalAccel;
 					
@@ -224,21 +242,17 @@ ImageButton button;
 							//the acceleration is much greater than gravity, so the device is moving in the 
 							//opposite direction of gravity (going up)
 							aboveGravity = 1;
-							//Log.d(TAG, "Reached Bottom: accel = "+totalAccel);
 						}
 						else if(totalAccel < gravity && aboveGravity == 1) {
 							//the acceleration is much less than gravity, so the device is moving in the 
 							//same direction as gravity (going down)
 							aboveGravity = 0;
 							repCount++;
-							//Log.d(TAG, "Reached Top: accel = "+totalAccel);
 							//show the rep count on the screen
 							accel.setText("Rep Count = "+repCount);
 						}
 					}
-					
 					break;
-					
 			}
 		}
 		sensorLock = 0;
@@ -251,6 +265,9 @@ ImageButton button;
 			//update the list of today's sets
 			displaySetsFromToday();
 			super.onResume();
+			//get the sensitivity setting
+			sensitivity = Integer.valueOf(mPrefs.getString(motionSensitivityPreference, "3"));
+			threshhold = (float) (1.6 - (float) sensitivity / 5);
 		}
 
 		@Override

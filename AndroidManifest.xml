@@ -44,7 +44,7 @@
         </activity>
         <activity android:name="ExerTrackerPreferences">
             <intent-filter>
-                <action android:name="android.settings.SETTINGS"/>
+                <action android:name="com.bhjy.ExerTracker.ShowPreferencesActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

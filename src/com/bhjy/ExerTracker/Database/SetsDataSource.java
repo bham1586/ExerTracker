@@ -113,7 +113,7 @@ public class SetsDataSource {
         			Set newSet = new Set();
         			newSet.setReps(repsInDay);
         			newSet.setStartTime(lastDate);
-        			Log.d("ExerTracker", set.getId() + " = " + lastDate.getTime() + " " + convertDateToString(newSet.getStartTime()));
+        			//Log.d("ExerTracker", set.getId() + " = " + lastDate.getTime() + " " + convertDateToString(newSet.getStartTime()));
         			repsByDay.add(newSet);
         			
         			//set lastdate to this date

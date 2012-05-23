@@ -53,7 +53,6 @@ public class ExercisesDataSource {
 
 		public void deleteExercise(Exercise exercise) {
 			long id = exercise.getId();
-			System.out.println("Exercise deleted with id: " + id);
 			database.delete(MyDatabaseHelper.TABLE_EXERCISES, MyDatabaseHelper.EXERCISES_ID
 					+ " = " + id, null);
 		}

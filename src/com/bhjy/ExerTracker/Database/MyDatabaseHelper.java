@@ -55,8 +55,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		Log.w(MyDatabaseHelper.class.getName(),
-				"Creating Database.");
+		//Log.w(MyDatabaseHelper.class.getName(), "Creating Database.");
 		db.execSQL(TABLE_EXERCISES_CREATE);
 		db.execSQL(TABLE_SETS_CREATE);
 
@@ -78,9 +77,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.w(MyDatabaseHelper.class.getName(),
-				"Upgrading database from version " + oldVersion + " to "
-						+ newVersion + ", which will destroy all old data");
+		//Log.w(MyDatabaseHelper.class.getName(), "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXERCISES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_SETS);
 		onCreate(db);

@@ -108,7 +108,7 @@ public class RecordsActivity extends Activity {
     private void displaySingleRecord(int viewId, Set set) {
     	 TextView tv;
          tv = (TextView) this.findViewById(viewId);
-         Log.d("ExerTracker", String.valueOf(set.getStartTime()));
+         //Log.d("ExerTracker", String.valueOf(set.getStartTime()));
          tv.setText("    " + String.valueOf(set.getReps()) + " reps on " + convertDateForDisplay(set.getStartTime()) + "\n");
     }
     

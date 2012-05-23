@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:text="@+string/prompt"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/accel"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:background="@null"
         android:src="@drawable/start_button" />
 
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/accel"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:background="@null"
         android:src="@drawable/done_button" />
     
@@ -94,6 +94,15 @@
         android:layout_below="@+id/doneBtn"
         android:layout_centerHorizontal="true"
         android:text="Today's sets"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge" android:layout_marginTop="10dp" android:layout_marginBottom="5dp"/>
+
+    <Button
+        android:id="@+id/settingsButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Settings" />
 
 </RelativeLayout>
