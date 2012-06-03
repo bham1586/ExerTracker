@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.bhjy.ExerTracker.Database.ExercisesDataSource;
 import com.bhjy.ExerTracker.Database.SetsDataSource;
+import com.bhjy.ExerTracker.Models.Advertisement;
 import com.bhjy.ExerTracker.Models.Set;
 
 import android.app.Activity;
@@ -33,7 +34,9 @@ public class MotionCountActivity extends Activity implements SensorEventListener
     private List<Set> setList;
     private ListView setListView;
 	final String TAG = "Exercise Tracker";
-	
+
+    private Advertisement advert = new Advertisement();
+    
 	TextView accel; // declare Z axis object
 
 	float ax = 0;
@@ -112,6 +115,7 @@ public class MotionCountActivity extends Activity implements SensorEventListener
 		sensitivity = Integer.valueOf(mPrefs.getString(motionSensitivityPreference, "3"));
 		threshhold = (float) (1.6 - (float) sensitivity / 5);
         //Log.d("ExerTracker", String.valueOf(sensitivity) + " " + String.valueOf(threshhold));
+        advert.setUpAds(this);
 	}
 	
 	private void createButtonListeners(){
@@ -283,5 +287,12 @@ ImageButton button;
 			//this function gets all sets of this exercise today, then displays it in the listView
 			setList = setsDB.getAllSetsToday(exercise_id);
 			setListView.setAdapter(new ArrayAdapter<Set>(this, android.R.layout.simple_list_item_1, setList));
+		}
+		
+
+		@Override
+		public void onDestroy() {
+			advert.destroy();
+			super.onDestroy();
 		}
 }

@@ -7,8 +7,10 @@ import com.bhjy.ExerTracker.R.id;
 import com.bhjy.ExerTracker.Database.ExercisesDataSource;
 import com.bhjy.ExerTracker.Database.MyDatabaseHelper;
 import com.bhjy.ExerTracker.Database.SetsDataSource;
+import com.bhjy.ExerTracker.Models.Advertisement;
 import com.bhjy.ExerTracker.Models.Exercise;
 import com.bhjy.ExerTracker.Models.Set;
+import com.google.ads.*;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,7 +27,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
@@ -36,11 +40,11 @@ public class ExerTrackerActivity extends Activity {
     
 	SharedPreferences mPrefs;
 	final String showWelcomeScreenPref = "showWelcomeScreen";
-	
     private ExercisesDataSource exercisesDB;
     private SetsDataSource setsDB;
     private List<Exercise> allExercises;
     private ListView exerciseList;
+    private Advertisement advert = new Advertisement();
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,8 +80,12 @@ public class ExerTrackerActivity extends Activity {
 		
         //this is for testing the progress functionality
         //if there is no history, it will create some
-        createFakeHistory();
+        //createFakeHistory();
+        
+        advert.setUpAds(this);
     }
+    
+    
     
     private void createButtonListeners(){
 
@@ -164,5 +172,9 @@ public class ExerTrackerActivity extends Activity {
 		setsDB.close();
 	}
 	
-	
+	@Override
+	public void onDestroy() {
+		advert.destroy();
+		super.onDestroy();
+	}
 }

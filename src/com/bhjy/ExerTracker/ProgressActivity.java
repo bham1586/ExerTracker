@@ -16,6 +16,7 @@ import org.achartengine.renderer.XYSeriesRenderer;
 import com.bhjy.ExerTracker.Database.ExercisesDataSource;
 import com.bhjy.ExerTracker.Database.MyDatabaseHelper;
 import com.bhjy.ExerTracker.Database.SetsDataSource;
+import com.bhjy.ExerTracker.Models.Advertisement;
 import com.bhjy.ExerTracker.Models.Exercise;
 import com.bhjy.ExerTracker.Models.Set;
 
@@ -48,7 +49,8 @@ public class ProgressActivity extends Activity {
     private List<Set> allSets; 
     private List<List<Set>> allSetsAllExercises;
     private GraphicalView mChartView;
-    
+
+    private Advertisement advert = new Advertisement();
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,8 @@ public class ProgressActivity extends Activity {
         	mChartView.repaint();
         }        
         
+
+        advert.setUpAds(this);
         
     }
     
@@ -233,4 +237,10 @@ public class ProgressActivity extends Activity {
 		return myRenderer;			    
     }
 	
+
+	@Override
+	public void onDestroy() {
+		advert.destroy();
+		super.onDestroy();
+	}
 }

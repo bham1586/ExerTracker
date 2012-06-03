@@ -7,6 +7,7 @@ import java.util.List;
 import com.bhjy.ExerTracker.Database.ExercisesDataSource;
 import com.bhjy.ExerTracker.Database.MyDatabaseHelper;
 import com.bhjy.ExerTracker.Database.SetsDataSource;
+import com.bhjy.ExerTracker.Models.Advertisement;
 import com.bhjy.ExerTracker.Models.Exercise;
 import com.bhjy.ExerTracker.Models.Set;
 
@@ -35,6 +36,8 @@ public class RecordsActivity extends Activity {
     private List<Exercise> allExercises;
     private List<Set> allSets; 
     SimpleDateFormat displayableDateFormat = new SimpleDateFormat("MMM dd, yyyy");
+
+    private Advertisement advert = new Advertisement();
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,39 +73,8 @@ public class RecordsActivity extends Activity {
         set = setsDB.getMaxRepsInSet(allExercises.get(3).getId());
         displaySingleRecord(R.id.MostSquatsInSet, set);
         
-        //TextView tv;
-        //tv = (TextView) this.findViewById(R.id.MostPullupsInDay);
-        //tv.setText("    " + String.valueOf(set.getReps()) + " reps on " + setsDB.convertDateToString(set.getStartTime()).substring(0, 10) + "\n");
-        
-        /*
-        for(final Exercise e:allExercises)
-		{
-        	allSets = setsDB.getAllSets(e.getId());
-        	Date lastDate = new Date();
-        	Date dateOfMostRepsInDay = new Date();
-        	Date dateOfMostRepsInSet = new Date();
-        	int repsInDay = 0;
-        	int maxRepsInDay = 0;
-        	int maxRepsInSet = 0;
-        	for(final Set set:allSets) {
-        		if(lastDate.getDate() != set.getStartTime().getDate()) {
-        			//check if last date was a record
-        			
-        			//set lastdate to this date
-        			
-        			//reset repsInDay
-        			
-        		}
-        		//check if reps in set is greater than record
-        		
-        		//add reps to current day
-        		
-        	}
-        	//display results in the text views
-            tv = (TextView) this.findViewById(R.id.MostPullupsInDay);
-            tv.setText(maxReps "");
-		}
-		*/
+
+        advert.setUpAds(this);
     }
     
     private void displaySingleRecord(int viewId, Set set) {
@@ -172,4 +144,10 @@ public class RecordsActivity extends Activity {
 		super.onPause();
 	}
 	
+
+	@Override
+	public void onDestroy() {
+		advert.destroy();
+		super.onDestroy();
+	}
 }
